@@ -1,8 +1,29 @@
-List of Maps:
+Maps:
 
-<br><br>
 <% @maps.each do |map| %>
-	Zoom: <%= map.zoom %>
-	Latitude: <%= map.center_lat %> 
-	<br>
+    <%= link_to map_markers_path(map) do %>
+        <div id="<%= map.id %>" class="mapStyle"></div>
+    <% end %>
+
+    <%= link_to "Edit Map", edit_map_path(map) %>
+    <%= link_to "Delete Map", map_path(map), method: :delete, data: {confirm: "Are you sure?"} %>
 <% end %>
+<br><br>
+<%= link_to "Add a New Map", new_map_path %>
+
+
+<script>
+var maps = <%= @maps_j %>;
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZW1tYWY5IiwiYSI6ImNpeTd0YTNtajAwNzMzMm1wc2MzYmptNjIifQ.oE5OkjaX_ntWQ5w0wiYWTQ';
+
+maps.forEach(function(map) {
+    var map = new mapboxgl.Map({
+        container: map[0].toString(),
+        style: 'mapbox://styles/mapbox/streets-v9',
+        maxBounds: [ [map[1], map[4]], [map[3], map[2]] ],
+        interactive: false
+    });
+});
+
+</script>

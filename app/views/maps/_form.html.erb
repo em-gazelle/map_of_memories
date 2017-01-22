@@ -1,0 +1,34 @@
+<%= form_for(@map) do |f| %>
+  <% if @map.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@map.errors.count, "error") %> stopped us from creating your map:</h2>
+
+      <ul>
+      <% @map.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :upper_right_longitude %><br />
+    <%= f.number_field :upper_right_longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :upper_right_latitude %><br />
+    <%= f.number_field :upper_right_latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :lower_left_latitude %><br />
+    <%= f.number_field :lower_left_latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :lower_left_longitude %><br />
+    <%= f.number_field :lower_left_longitude %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

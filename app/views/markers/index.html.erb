@@ -1,0 +1,81 @@
+See your memories of this place, or click on the map to add another:
+<div id="mape" class="mapStyle largeMap"></div>
+
+
+<script>
+	var mapatt = <%= @mapatt %>;
+	var mapm = JSON.parse(<%= raw @marks_j %>);
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZW1tYWY5IiwiYSI6ImNpeTd0YTNtajAwNzMzMm1wc2MzYmptNjIifQ.oE5OkjaX_ntWQ5w0wiYWTQ';
+
+    var map = new mapboxgl.Map({
+        container: 'mape',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        maxBounds: [ [mapatt[1], mapatt[4]], [mapatt[3], mapatt[2]] ],
+        interactive: false
+    });
+
+
+	var featurez = [];
+
+	mapm.forEach(function(map) {
+		featurez.push({"type": "Feature",
+	    "properties": {
+	        "description": "<strong>"+map[2]+"</strong> <p>"+map[3]+"</p>",
+	        "icon": "star"
+	    },
+	    "geometry": {
+	        "type": "Point",
+	        "coordinates": [map[0], map[1]]
+	    }});
+	});
+
+	map.on('load', function() {
+	    map.addLayer({
+	        "id": "places",
+	        "type": "symbol",
+	        "source": {
+	            "type": "geojson",
+	            "data": {
+	                "type": "FeatureCollection",
+	                "features": featurez
+	            }
+	        },
+	        "layout": {
+	            "icon-image": "{icon}-15",
+	            "icon-allow-overlap": true
+	        }
+	    });
+	});
+
+	var popup = new mapboxgl.Popup({
+	    closeButton: false,
+	    closeOnClick: false
+	});
+
+	map.on('mousemove', function(e) {
+	    var features = map.queryRenderedFeatures(e.point, { layers: ['places'] });
+	    // Change the cursor style as a UI indicator.
+	    map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+	    if (!features.length) {
+	        popup.remove();
+	        return;
+	    }
+
+	    var feature = features[0];
+
+	    // Populate the popup and set its coordinates
+	    // based on the feature found.
+	    popup.setLngLat(feature.geometry.coordinates)
+	        .setHTML(feature.properties.description)
+	        .addTo(map);
+	});
+
+	map.on('click', function(e) {
+		var featureCoordinates = e.lngLat;
+		// e.lngLat.lat
+		// e.lngLat.lng
+	})
+
+</script>
