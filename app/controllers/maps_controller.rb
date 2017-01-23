@@ -11,7 +11,7 @@ class MapsController < ApplicationController
 
 		respond_to do |format|
 			if @map.save
-		        format.html { redirect_to map_path(@map) }
+		        format.html { redirect_to map_markers_path(@map) }
 		        format.json
 			else
 		        format.html { render :new }

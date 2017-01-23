@@ -73,9 +73,12 @@ See your memories of this place, or click on the map to add another:
 	});
 
 	map.on('click', function(e) {
-		var featureCoordinates = e.lngLat;
-		// e.lngLat.lat
-		// e.lngLat.lng
+		window.location = (window.location.pathname+"/new?longitude="+e.lngLat.lng+"&latitude="+e.lngLat.lat);
+		// $.ajax({
+		// 	type: "GET",
+		// 	url: window.location.pathname+"/new",
+		// 	data: { longitude: e.lngLat.lng, latitude: e.lngLat.lat }
+		// });
 	})
 
 </script>

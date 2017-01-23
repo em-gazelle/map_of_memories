@@ -1,11 +1,12 @@
 class MarkersController < ApplicationController
 	before_action :set_map
-	
+
 	def new
+		@marker = @map.markers.new
 	end
 
 	def create
-		@marker = @map.markers.new(marker_params)
+		@marker = @map.markers.create(marker_params)
 
 		respond_to do |format|
 			if @marker.save
